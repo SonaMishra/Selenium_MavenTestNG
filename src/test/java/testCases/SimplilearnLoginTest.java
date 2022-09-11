@@ -25,6 +25,8 @@ public class SimplilearnLoginTest extends BaseClass {
 		System.out.println("Test1 is done");
 
 	}
+	
+	
 	@Test
 	@Parameters({"uname","pwd"})
 	public void Test2(String UserName, String Password) {
