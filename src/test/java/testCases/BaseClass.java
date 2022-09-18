@@ -2,6 +2,7 @@ package testCases;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -13,10 +14,15 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 
+import com.relevantcodes.extentreports.ExtentReports;
+import com.relevantcodes.extentreports.ExtentTest;
+
 public class BaseClass {
 	WebDriver driver;
 	XSSFWorkbook wbook;
 	XSSFSheet sheet;
+	ExtentReports report;
+	ExtentTest test;
 	
 	
 	@BeforeTest
@@ -26,6 +32,9 @@ public class BaseClass {
      wbook= new XSSFWorkbook(fis);
      sheet=wbook.getSheet("Sheet1");
      System.out.println("inside Before Test");
+     
+     report = new ExtentReports("ExtentReport.html");
+     
 	}
 	
 	
@@ -33,10 +42,17 @@ public class BaseClass {
 	public void DataClean() throws IOException {
           wbook.close();
           System.out.println("inside After Test");
+          
+          report.flush();
+          report.close();
+          
 	}
 
 	@BeforeMethod
-	public void Setup() {
+	public void Setup(Method method) {
+		
+		test = report.startTest(method.getName());
+		
 		System.setProperty("Webdriver.Chrome.Driver", "Chromedriver.exe");
 		driver = new ChromeDriver();
 		driver.get("https://www.simplilearn.com/");
@@ -46,6 +62,8 @@ public class BaseClass {
 
 	@AfterMethod
 	public void TearDown() {
+		
+		report.endTest(test);
 		driver.close();
 	}
 }

@@ -2,4 +2,3 @@ testCases\HomeTest.class
 testCases\BaseClass.class
 testCases\SimplilearnLoginTest.class
 pages\LoginPage.class
-pages\HomePage.class
